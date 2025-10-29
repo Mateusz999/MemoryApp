@@ -1,0 +1,27 @@
+
+
+<!-- tworzymy layout frame, który idealnie nadaje się do tego typu rozwiązań
+     nadajemy wysokość, szerokość, tło, ustawiamy klikalność
+     wewnątrz karty ustawiamy nasza emotkę, która wyświetli się
+     dopiero po obrocie, domyślnie jest schowana za pomocą parametru
+     adroid:visibility: GONE, który w przypadku gd karta jest widoczna
+     przyjmuje wartość VISIBLE -->
+
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="80dp"
+    android:layout_height="80dp"
+    android:layout_margin="8dp"
+    android:background="@drawable/card_back"
+    android:clickable="true"
+    android:focusable="true">
+
+    <ImageView
+        android:id="@+id/cardIcon"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:src="@drawable/angry"
+        android:contentDescription="Minka" />
+</FrameLayout>
