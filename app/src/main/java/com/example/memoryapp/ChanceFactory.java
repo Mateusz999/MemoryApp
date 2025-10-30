@@ -31,9 +31,9 @@ public class ChanceFactory {
         for (int i = 0; i < amountOfChances; i++) {
             ImageView singleChance = new ImageView(context);
             singleChance.setImageResource(icon);
-            int size = (int) (32 * context.getResources().getDisplayMetrics().density); // 32dp
+            int size = (int) (16 * context.getResources().getDisplayMetrics().density); // 32dp
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(size, size);
-            params.setMargins(8, 8, 8, 8);
+            params.setMargins(4, 4, 4, 4);
             singleChance.setLayoutParams(params);
 
             linearLayout.addView(singleChance);

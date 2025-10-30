@@ -13,14 +13,17 @@ public class GameLogic {
     private int pairMatched = 0;
     private final DelayExecutor delayExecutor;
     private final GameEndCallback onGameEnd;
-
-    public GameLogic(GameEndCallback onGameEnd, DelayExecutor delayExecutor, List<ImageView> chances) {
+    private DifficultyLevel level;
+    public GameLogic(GameEndCallback onGameEnd, DelayExecutor delayExecutor, List<ImageView> chances,DifficultyLevel level) {
         this.onGameEnd = onGameEnd;
         this.delayExecutor = delayExecutor;
         this.chances = chances;
+        this.level = level;
     }
 
-
+    public DifficultyLevel getLives(){
+        return level;
+    }
     public void handleFlip(MemoryCard card) {
         if (flippedCards.size() < 2) {
             card.forcedFlip();
