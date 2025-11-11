@@ -1,10 +1,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main_activity"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/wallpaper">
-    <!-- Tworzymy layout liniowy w układzie wertykalnym  -->
+    android:layout_height="match_parent">
 
+    <!-- Tło jako ImageView z proporcjonalnym skalowaniem -->
+    <ImageView
+        android:id="@+id/backgroundImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/wallpaper"
+        android:contentDescription="@null" />
+
+    <!-- Layout menu -->
     <LinearLayout
         android:id="@+id/menuLayout"
         android:layout_width="wrap_content"
@@ -14,7 +22,7 @@
         android:layout_centerInParent="true"
         android:padding="24dp">
 
-        <!-- przycisk startowy -->
+        <!-- Przycisk startowy -->
         <Button
             android:id="@+id/startGameButton"
             android:layout_width="200dp"
@@ -22,7 +30,8 @@
             android:textSize="20dp"
             android:onClick="StartGame"
             android:text="Zagraj" />
-        <!-- przycisk ustawien - narazie w fazie rozwoju, więc jest disabled -->
+
+        <!-- Przycisk ustawień -->
         <Button
             android:id="@+id/optionsButton"
             android:layout_width="200dp"
@@ -31,16 +40,16 @@
             android:text="Opcje"
             android:enabled="false"
             android:layout_marginTop="16dp" />
-        <!-- przycisk jak grac - narazie rowniez w fazie rozwoju -->
+
+        <!-- Przycisk instrukcji -->
         <Button
             android:id="@+id/howToPlayButton"
             android:layout_width="200dp"
             android:layout_height="60dp"
             android:enabled="false"
             android:textSize="20dp"
-            android:text="Jak grać ? "
+            android:text="Jak grać ?"
             android:layout_marginTop="16dp" />
-
     </LinearLayout>
 
 </RelativeLayout>

@@ -1,4 +1,4 @@
-package com.example.memoryapp;
+package com.example.memoryapp.Enum;
 
 public enum DifficultyLevel {
     EASY(20),

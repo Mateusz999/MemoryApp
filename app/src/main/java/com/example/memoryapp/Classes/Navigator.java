@@ -1,10 +1,9 @@
-package com.example.memoryapp;
+package com.example.memoryapp.Classes;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.view.View;
-import android.widget.Button;
+
+import com.example.memoryapp.MainActivity;
 
 public class Navigator {
     private final Context context;
@@ -14,7 +13,7 @@ public class Navigator {
     }
 
     public void goToMenu(){
-        Intent intent = new Intent(context,MainActivity.class);
+        Intent intent = new Intent(context, MainActivity.class);
         context.startActivity(intent);
     }
 

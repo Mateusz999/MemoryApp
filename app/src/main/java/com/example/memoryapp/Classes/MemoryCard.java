@@ -1,10 +1,13 @@
-package com.example.memoryapp;
+package com.example.memoryapp.Classes;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.view.View;
 import android.widget.ImageView;
+
+import com.example.memoryapp.Interfaces.OnCardFlipListener;
+import com.example.memoryapp.R;
 
 public class MemoryCard {
     private final View cardView;
@@ -26,6 +29,11 @@ public class MemoryCard {
     *   Metoda flip implementuje dwie animacje, które są kolejno pierwszą oraz drugą fazą obrotu
     *
     * */
+    public int getImageResId() {
+        Object tag = icon.getTag();
+        return tag instanceof Integer ? (int) tag : 0;
+    }
+
     public void flip() {
         ObjectAnimator flipOut = ObjectAnimator.ofFloat(cardView, "rotationY", 0f, 90f);
         ObjectAnimator flipIn = ObjectAnimator.ofFloat(cardView, "rotationY", -90f, 0f);
@@ -54,6 +62,16 @@ public class MemoryCard {
 
     public void setIcon(int drawableResId) {
         icon.setImageResource(drawableResId);
+        icon.setTag(drawableResId);
     }
+
+    public boolean getFlipedState(){
+        return isFlipped;
+    }
+
+    public boolean isMatched() {
+        return cardView.getVisibility() == View.INVISIBLE;
+    }
+
 
 }

@@ -1,8 +1,11 @@
-package com.example.memoryapp;
+package com.example.memoryapp.Classes;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.GridLayout;
+
+import com.example.memoryapp.Interfaces.OnCardFlipListener;
+import com.example.memoryapp.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,6 +16,7 @@ public class CardFactory {
     private final LayoutInflater inflater;
     private final GridLayout gridLayout;
     private final OnCardFlipListener listener;
+
     private static final int[] ICONS = {
             R.drawable.frightened, R.drawable.sad, R.drawable.angry, R.drawable.loving,
             R.drawable.shy, R.drawable.happiness, R.drawable.border, R.drawable.worried

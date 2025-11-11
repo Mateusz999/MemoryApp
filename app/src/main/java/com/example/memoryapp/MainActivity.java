@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.memoryapp.Classes.GameBoard;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override

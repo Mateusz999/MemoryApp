@@ -1,10 +1,11 @@
-package com.example.memoryapp;
+package com.example.memoryapp.Classes;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import com.example.memoryapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
