@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.GridLayout;
 
+import com.example.memoryapp.Interfaces.IGameStateSaver;
 import com.example.memoryapp.Interfaces.OnCardFlipListener;
 import com.example.memoryapp.R;
 
@@ -15,16 +16,19 @@ public class CardFactory {
 
     private final LayoutInflater inflater;
     private final GridLayout gridLayout;
-    private final OnCardFlipListener listener;
+    private final GameBoard gameBoard;       // zamiast OnCardFlipListener
+    private final IGameStateSaver saver;
 
     private static final int[] ICONS = {
             R.drawable.frightened, R.drawable.sad, R.drawable.angry, R.drawable.loving,
             R.drawable.shy, R.drawable.happiness, R.drawable.border, R.drawable.worried
     };
-    public CardFactory(LayoutInflater inflater, GridLayout gridLayout, OnCardFlipListener listener) {
+
+    public CardFactory(LayoutInflater inflater, GridLayout gridLayout, GameBoard gameBoard, IGameStateSaver saver) {
         this.inflater = inflater;
         this.gridLayout = gridLayout;
-        this.listener = listener;
+        this.gameBoard = gameBoard;
+        this.saver = saver;
     }
 
     public List<MemoryCard> createCards() {
@@ -35,7 +39,8 @@ public class CardFactory {
             View cardView = inflater.inflate(R.layout.memory_card, gridLayout, false);
             gridLayout.addView(cardView);
 
-            MemoryCard card = new MemoryCard(cardView, listener);
+            // konstruktor MemoryCard: View, GameBoard, IGameStateSaver
+            MemoryCard card = new MemoryCard(cardView, gameBoard, saver);
             card.setIcon(pairedIcons.get(i));
             cards.add(card);
         }

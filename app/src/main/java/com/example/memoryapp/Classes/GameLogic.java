@@ -16,16 +16,18 @@ public class GameLogic {
     private int pairMatched = 0;
     private final DelayExecutor delayExecutor;
     private final GameEndCallback onGameEnd;
+    private GameState currentState;
     private boolean isChecked;
     private DifficultyLevel level;
     private boolean isBusy = false;
 
-    public GameLogic(GameEndCallback onGameEnd, DelayExecutor delayExecutor, List<ImageView> chances, DifficultyLevel level, boolean isChecked) {
+    public GameLogic(GameEndCallback onGameEnd, DelayExecutor delayExecutor, List<ImageView> chances, DifficultyLevel level, boolean isChecked, GameState currentState) {
         this.onGameEnd = onGameEnd;
         this.delayExecutor = delayExecutor;
         this.chances = chances;
         this.level = level;
         this.isChecked = isChecked;
+        this.currentState = currentState;
     }
 
     public void setPairsMatched(int count) {

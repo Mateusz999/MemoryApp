@@ -37,4 +37,5 @@ public class SaveDialogFragment extends DialogFragment {
                 .setNegativeButton("Anuluj", null)
                 .create();
     }
+   
 }

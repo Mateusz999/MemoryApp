@@ -29,11 +29,15 @@ public class GameBoard extends AppCompatActivity implements OnCardFlipListener {
     private final List<MemoryCard> flippedCards = new ArrayList<>();
     private int pairMatched = 0;
     private GameLogic gameLogic;
+    private GameState currentState;
+    private GameStatePreferencesRepository repository;
     private List<MemoryCard> cards;
     private final DelayExecutor executor = (task, delay) -> new Handler().postDelayed(task, delay);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        currentState = new GameState();
+        repository = new GameStatePreferencesRepository(this);
         setContentView(R.layout.game_board);
 
         SwitchMaterial materialSwitch = findViewById(R.id.material_switch);
@@ -47,7 +51,7 @@ public class GameBoard extends AppCompatActivity implements OnCardFlipListener {
         // Tworzenie kart
         GridLayout gridLayout = findViewById(R.id.gridLayout);
         LayoutInflater inflater = LayoutInflater.from(this);
-        CardFactory factory = new CardFactory(inflater, gridLayout, this);
+        CardFactory factory = new CardFactory(inflater, gridLayout, this,repository);
          cards = factory.createCards();
 
 
@@ -62,17 +66,16 @@ public class GameBoard extends AppCompatActivity implements OnCardFlipListener {
         ChanceFactory chanceFactory = new ChanceFactory(currentLevel.getLives(),inflater,linearLayout,this);
         List<ImageView> lifeIcons = chanceFactory.printChances();
         // logika gry
-        gameLogic = new GameLogic(this::showModal, executor, lifeIcons,currentLevel,isChecked);
+        gameLogic = new GameLogic(this::showModal, executor, lifeIcons,currentLevel,isChecked,currentState);
 
         materialSwitch.setOnCheckedChangeListener((buttonView, isCheckedNow) -> {
             gameLogic.setChecked(isCheckedNow);
         });
-        GameStatePreferencesRepository repository = new GameStatePreferencesRepository(this);
 
         Button saveButton = findViewById(R.id.saveButton);
         Button loadButton = findViewById(R.id.loadButton);
         saveButton.setOnClickListener(v -> {
-            GameState currentState = buildCurrentGameState();
+            currentState = buildCurrentGameState();
             SaveDialogFragment dialog = new SaveDialogFragment(repository, currentState);
             dialog.show(getSupportFragmentManager(), "saveDialog");
         });
@@ -87,7 +90,8 @@ public class GameBoard extends AppCompatActivity implements OnCardFlipListener {
         });
     }
 
-    private GameState buildCurrentGameState() {
+    public GameState buildCurrentGameState() {
+
         GameState state = new GameState();
 
         // Poziom trudności
@@ -98,23 +102,28 @@ public class GameBoard extends AppCompatActivity implements OnCardFlipListener {
         state.isChecked = materialSwitch.isChecked();
 
         // Liczba dopasowanych par
-        state.pairsMatched = gameLogic.getPairsMatched(); // zakładam, że masz getter w GameLogic
+        state.pairsMatched = gameLogic.getPairsMatched();
 
         // Liczba pozostałych żyć
-        state.remainingLives = gameLogic.getRemainingLives(); // lub lifeIcons.size()
+        state.remainingLives = gameLogic.getRemainingLives();
 
         // Stan wszystkich kart
         List<CardState> cardStates = new ArrayList<>();
         for (MemoryCard card : cards) {
             CardState cs = new CardState();
-            cs.imageResId = card.getImageResId(); // dodaj getter w MemoryCard
-            cs.isFlipped = card.getFlipedState();      // dodaj getter
+            cs.imageResId = card.getImageResId();      // ikona karty
+            cs.isFlipped = card.getFlipedState();      // czy karta jest odwrócona
+            cs.isMatched = card.isMatched();           // czy karta została dopasowana
             cardStates.add(cs);
         }
         state.cards = cardStates;
 
+        // przypisanie do currentState, żeby zawsze był aktualny
+        currentState = state;
+
         return state;
     }
+
 
 
 
@@ -147,9 +156,12 @@ public class GameBoard extends AppCompatActivity implements OnCardFlipListener {
     @Override
     public void onCardFlip(MemoryCard card) {
         gameLogic.handleFlip(card);
+        currentState = buildCurrentGameState();
     }
 
     private void onLoad(GameState state) {
+        currentState = state;
+
         GridLayout gridLayout = findViewById(R.id.gridLayout);
         gridLayout.removeAllViews();
         cards.clear();
@@ -169,14 +181,16 @@ public class GameBoard extends AppCompatActivity implements OnCardFlipListener {
             View cardView = inflater.inflate(R.layout.memory_card, gridLayout, false);
             gridLayout.addView(cardView);
 
-            MemoryCard card = new MemoryCard(cardView, this);
+            MemoryCard card = new MemoryCard(cardView, this, repository);
+
             card.setIcon(cs.imageResId);
-            if (cs.isFlipped) card.forcedFlip();
-            if (cs.isMatched) card.hideCard();
+            if (cs.isFlipped) card.setFlipped(true);
+            card.setMatched(cs.isMatched);
+
             cards.add(card);
         }
 
-        gameLogic = new GameLogic(this::showModal, executor, lifeIcons, level, state.isChecked);
+        gameLogic = new GameLogic(this::showModal, executor, lifeIcons, level, state.isChecked,currentState);
         gameLogic.setPairsMatched(state.pairsMatched);
         gameLogic.setRemainingLives(state.remainingLives);
     }
